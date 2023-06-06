@@ -1,0 +1,44 @@
+enum eTokenType {
+  t_command,
+  t_data
+}
+
+enum eCommand {
+    c_zero,
+    c_read_setup,
+    c_read_execute,
+    c_program_setup,
+    c_program_execute,
+    c_erase_setup,
+    c_erase_execute,
+    c_dummy
+}
+
+type tToken = (cmd: eCommand, data: int, ready: bool);
+
+event eToken : tToken;
+event eReset;
+
+machine Nand
+{
+    var client: machine;
+
+    state ms_bug {
+        on eToken do (t: tToken) {
+           if (t.cmd == c_read_setup && t.ready) {
+                send client, t;
+                goto ms_read_awaiting_block_address;
+            } else if (t.cmd == c_program_setup && t.ready) {
+                send client, t;
+                goto ms_program_awaiting_block_address;
+            } else if (t.cmd == c_erase_setup && t.ready) {
+                send client, t;
+                goto ms_erase_awaiting_block_address;
+            }
+        }
+        on eReset {
+            send client, eReset;
+            goto ms_initial_state;
+        }
+    }
+

@@ -1,0 +1,65 @@
+digraph machine {
+	state_0[label="MS_INITIAL_STATE"];
+	state_0->state_7[label="C_PROGRAM_SETUP"];
+	state_0->state_11[label="C_ERASE_SETUP"];
+	state_0->state_2[label="C_READ_SETUP"];
+	state_0->state_1[label="NOT(C_READ_SETUP) && NOT(C_PROGRAM_SETUP) && NOT(C_ERASE_SETUP)"];
+
+	state_1[label="MS_BUG"];
+
+	state_2[label="MS_READ_AWAITING_BLOCK_ADDRESS"];
+	state_2->state_1[label="READY && NOT(C_READ_SETUP) || NOT(READY)"];
+	state_2->state_3[label="READY && C_READ_SETUP"];
+
+	state_3[label="MS_READ_AWAITING_PAGE_ADDRESS"];
+	state_3->state_1[label="READY && NOT(C_READ_SETUP) || NOT(READY)"];
+	state_3->state_4[label="READY && C_READ_SETUP"];
+
+	state_4[label="MS_READ_AWAITING_BYTE_ADDRESS"];
+	state_4->state_1[label="READY && NOT(C_READ_SETUP) || NOT(READY)"];
+	state_4->state_5[label="READY && C_READ_SETUP"];
+
+	state_5[label="MS_READ_AWAITING_EXECUTE"];
+	state_5->state_1[label="READY && NOT(C_READ_EXECUTE) || NOT(READY)"];
+	state_5->state_6[label="READY && C_READ_EXECUTE"];
+
+	state_6[label="MS_READ_PROVIDING_DATA"];
+	state_6->state_1[label="READY && NOT(C_DUMMY) && NOT(C_READ_EXECUTE) && NOT(C_READ_SETUP) && NOT(C_PROGRAM_SETUP) && NOT(C_ERASE_SETUP) || NOT(READY)"];
+	state_6->state_7[label="READY && C_PROGRAM_SETUP"];
+	state_6->state_11[label="READY && C_ERASE_SETUP"];
+	state_6->state_2[label="READY && C_READ_SETUP"];
+	state_6->state_6[label="READY && C_READ_EXECUTE"];
+	state_6->state_6[label="READY && C_DUMMY"];
+
+	state_7[label="MS_PROGRAM_AWAITING_BLOCK_ADDRESS"];
+	state_7->state_1[label="READY && NOT(C_PROGRAM_SETUP) || NOT(READY)"];
+	state_7->state_8[label="READY && C_PROGRAM_SETUP"];
+
+	state_8[label="MS_PROGRAM_AWAITING_PAGE_ADDRESS"];
+	state_8->state_1[label="READY && NOT(C_PROGRAM_SETUP) || NOT(READY)"];
+	state_8->state_9[label="READY && C_PROGRAM_SETUP"];
+
+	state_9[label="MS_PROGRAM_AWAITING_BYTE_ADDRESS"];
+	state_9->state_1[label="READY && NOT(C_PROGRAM_SETUP) || NOT(READY)"];
+	state_9->state_10[label="READY && C_PROGRAM_SETUP"];
+
+	state_10[label="MS_PROGRAM_ACCEPTING_DATA"];
+	state_10->state_1[label="READY && NOT(C_DUMMY) && NOT(C_PROGRAM_EXECUTE) && NOT(C_READ_SETUP) && NOT(C_PROGRAM_SETUP) && NOT(C_ERASE_SETUP) || NOT(READY)"];
+	state_10->state_7[label="READY && C_PROGRAM_SETUP"];
+	state_10->state_11[label="READY && C_ERASE_SETUP"];
+	state_10->state_2[label="READY && C_READ_SETUP"];
+	state_10->state_10[label="READY && C_PROGRAM_EXECUTE"];
+	state_10->state_10[label="READY && C_DUMMY"];
+
+	state_11[label="MS_ERASE_AWAITING_BLOCK_ADDRESS"];
+	state_11->state_12[label="READY && C_ERASE_SETUP"];
+	state_11->state_1[label="READY && NOT(C_ERASE_SETUP) || NOT(READY)"];
+
+	state_12[label="MS_ERASE_AWAITING_EXECUTE"];
+	state_12->state_1[label="READY && NOT(C_ERASE_EXECUTE) && NOT(C_READ_SETUP) && NOT(C_PROGRAM_SETUP) && NOT(C_ERASE_SETUP) || NOT(READY)"];
+	state_12->state_7[label="READY && C_PROGRAM_SETUP"];
+	state_12->state_11[label="READY && C_ERASE_SETUP"];
+	state_12->state_2[label="READY && C_READ_SETUP"];
+	state_12->state_12[label="READY && C_ERASE_EXECUTE"];
+
+}
