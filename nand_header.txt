@@ -14,29 +14,35 @@ enum eCommand {
     c_dummy
 }
 
-type tToken = (cmd: eCommand, data: int, ready: bool);
+type tToken = (cmd: eCommand, ready: bool);
 
 event eToken : tToken;
 event eReset;
 
-machine Nand
+machine RuntimeMonitor
 {
     var client: machine;
 
+    start state Init {
+      entry (client: machine) {
+        client = client;
+        goto ms_initial_state;
+      }
+    }
     state ms_bug {
         on eToken do (t: tToken) {
            if (t.cmd == c_read_setup && t.ready) {
-                send client, t;
+                send client, eToken, t;
                 goto ms_read_awaiting_block_address;
             } else if (t.cmd == c_program_setup && t.ready) {
-                send client, t;
+                send client, eToken, t;
                 goto ms_program_awaiting_block_address;
             } else if (t.cmd == c_erase_setup && t.ready) {
-                send client, t;
+                send client, eToken, t;
                 goto ms_erase_awaiting_block_address;
             }
         }
-        on eReset {
+        on eReset do {
             send client, eReset;
             goto ms_initial_state;
         }

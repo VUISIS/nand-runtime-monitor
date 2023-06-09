@@ -1,0 +1,1 @@
+module RuntimeMonitorModules = { RuntimeMonitor, NandTester };

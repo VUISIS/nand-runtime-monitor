@@ -93,7 +93,7 @@ def print_state(state_name, state_trans, state_map, f):
     if state_name == "ms_bug":
         return
     print("    state {} {{".format(state_name), file=f)
-    print("        on eReset {", file=f)
+    print("        on eReset do {", file=f)
     print("            send client, eReset;", file=f)
     print("            goto ms_initial_state;", file=f)
     print("        }", file=f)
@@ -121,7 +121,7 @@ def print_state(state_name, state_trans, state_map, f):
                 print("t.cmd != {}".format(item[1].lower()), file=f, end='')
         print(") {", file=f)
         if state_map[st[0]].lower() != "ms_bug":
-            print("{}    send client, t;".format(indent, state_map[st[0]].lower()), file=f)
+            print("{}    send client, eToken, t;".format(indent, state_map[st[0]].lower()), file=f)
         print("{}    goto {};".format(indent, state_map[st[0]].lower()), file=f)
 #    print("                }", file=f)
     print("            }", file=f)
