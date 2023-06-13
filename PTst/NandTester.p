@@ -12,9 +12,12 @@ machine NandTester
 {
   var runtimeMonitor : machine;
   var testPos : int;
+  var expectedPassed : int;
+  var passed : int;
   var currToken : tTestToken;
   var currTest : tTokenList;
   var currSender : machine;
+  var expectingToken : bool;
 
   start state Init {
     entry {
@@ -27,6 +30,8 @@ machine NandTester
     on eRunTest do (runTest: tRunTest) {
       currTest = runTest.tokens;
       testPos = 0;
+      expectedPassed = 0;
+      passed = 0;
       currSender = runTest.sender;
 
       goto SendNextToken;
@@ -36,31 +41,51 @@ machine NandTester
   state SendNextToken {
     entry {
       if (testPos >= sizeof(currTest)) {
-        send currSender, eTestSuccessful;
+        if (expectedPassed != passed) {
+          send currSender, eTestFailed;
+        } else {
+          send currSender, eTestSuccessful;
+        }
         goto Run;
       }
       currToken = currTest[testPos];
-      send runtimeMonitor, eToken, (cmd=currToken.cmd, ready=currToken.ready);
-      testPos = testPos + 1;
+      expectingToken = currToken.shouldPass;
 
-      if (currToken.shouldPass) {
+      print ("Sending token ");
+      send runtimeMonitor, eToken, (cmd=currToken.cmd, ready=currToken.ready);
+
+      if (expectingToken) {
+        expectedPassed = expectedPassed + 1;
         goto AwaitToken;
-      }
+      } else {
+        goto ReadyNextToken;
+}
     }
 
     on eToken do {
+      print ("Received unexpected token ");
       send currSender, eTestFailed;
       goto Run;
     }
   }
 
+  state ReadyNextToken {
+    entry {
+      testPos = testPos + 1;
+      goto SendNextToken;
+    }
+  }
+
   state AwaitToken {
     on eToken do (t: tToken) {
-      if (t.cmd != currToken.cmd) {
+      if (!expectingToken || (t.cmd != currToken.cmd)) {
+        print ("Received unexpected token ");
         send currSender, eTestFailed;
         goto Run;
       }
-      goto SendNextToken;
+      passed = passed + 1;
+      print ("Received token ");
+      goto ReadyNextToken;
     }
   }
 }

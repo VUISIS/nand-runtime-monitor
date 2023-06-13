@@ -1,8 +1,3 @@
-enum eTokenType {
-  t_command,
-  t_data
-}
-
 enum eCommand {
     c_zero,
     c_read_setup,
@@ -24,8 +19,8 @@ machine RuntimeMonitor
     var client: machine;
 
     start state Init {
-      entry (client: machine) {
-        client = client;
+      entry (cl: machine) {
+        client = cl;
         goto ms_initial_state;
       }
     }
