@@ -1,5 +1,7 @@
 test simpleRead [main=TestSimpleRead]:
   assert TestOK in (union RuntimeMonitorModules, {TestSimpleRead});
+test readNoAddress [main=TestReadNoAddress]:
+  assert TestOK in (union RuntimeMonitorModules, {TestReadNoAddress});
 test readNotReady [main=TestReadNotReady]:
   assert TestOK in (union RuntimeMonitorModules, {TestReadNotReady});
 test readSkipExecute [main=TestReadSkipExecute]:
