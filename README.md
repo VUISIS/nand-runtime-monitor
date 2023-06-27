@@ -10,6 +10,12 @@ python3 cooked_to_nand.py
 
 This will generate the PSrc/RuntimeMonitor.p
 
+If you don't have P installed already, make sure you have the Microsoft Dotnet framework installed, and then do:
+
+```
+dotnet tool install --global P
+```
+
 To compile the P program:
 
 ```
