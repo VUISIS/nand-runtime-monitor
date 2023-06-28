@@ -20,3 +20,5 @@ test eraseWrongExecute [main=TestEraseWrongExecute]:
   assert TestOK in (union RuntimeMonitorModules, {TestEraseWrongExecute});
 test longTest [main=TestLong]:
   assert TestOK in (union RuntimeMonitorModules, {TestLong});
+test resetTest [main=TestReset]:
+  assert TestOK in (union RuntimeMonitorModules, {TestReset});

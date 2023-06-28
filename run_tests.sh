@@ -6,7 +6,7 @@ if [ $? -ne 0 ]; then
 fi
 
 mkdir -p testout
-for testname in simpleRead readNoAddress readNotReady readSkipExecute simpleProgram programSkipExecute programWrongExecute simpleErase eraseSkipExecute eraseWrongExecute longTest; do
+for testname in simpleRead readNoAddress readNotReady readSkipExecute simpleProgram programSkipExecute programWrongExecute simpleErase eraseSkipExecute eraseWrongExecute longTest resetTest; do
   P check PGenerated/CSharp/net6.0/RuntimeMonitor.dll -v -tc $testname > testout/$testname".txt"
   if [ $? -ne 0 ]; then
     echo "Test $testname failed"

@@ -1,4 +1,4 @@
-type tTestToken = (cmd: eCommand, ready: bool, shouldPass: bool);
+type tTestToken = (cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool);
 
 type tTokenList = seq[tTestToken];
 
@@ -49,21 +49,33 @@ machine NandTester
         goto Run;
       }
       currToken = currTest[testPos];
-      expectingToken = currToken.shouldPass;
-
-      print ("Sending token ");
-      send runtimeMonitor, eToken, (cmd=currToken.cmd, ready=currToken.ready);
-
-      if (expectingToken) {
-        expectedPassed = expectedPassed + 1;
-        goto AwaitToken;
+      if (currToken.shouldReset) {
+        print ("Sending reset");
+        send runtimeMonitor, eReset;
+        goto AwaitReset;
       } else {
-        goto ReadyNextToken;
-}
+        expectingToken = currToken.shouldPass;
+
+        print ("Sending token ");
+        send runtimeMonitor, eToken, (cmd=currToken.cmd, ready=currToken.ready);
+
+        if (expectingToken) {
+          expectedPassed = expectedPassed + 1;
+          goto AwaitToken;
+        } else {
+          goto ReadyNextToken;
+        }
+      }
     }
 
     on eToken do {
       print ("Received unexpected token ");
+      send currSender, eTestFailed;
+      goto Run;
+    }
+
+    on eReset do {
+      print ("Received unexpected reset ");
       send currSender, eTestFailed;
       goto Run;
     }
@@ -85,6 +97,25 @@ machine NandTester
       }
       passed = passed + 1;
       print ("Received token ");
+      goto ReadyNextToken;
+    }
+
+    on eReset do {
+        print ("Received unexpected reset ");
+        send currSender, eTestFailed;
+        goto Run;
+    }
+  }
+
+  state AwaitReset {
+    on eToken do (t: tToken) {
+      print ("Received unexpected token ");
+      send currSender, eTestFailed;
+      goto Run;
+    }
+
+    on eReset do {
+      print ("Received expected reset");
       goto ReadyNextToken;
     }
   }
