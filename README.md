@@ -19,13 +19,13 @@ dotnet tool install --global P
 To compile the P program:
 
 ```
-P compile -pp RuntimeMonitor.pproj
+p compile -pp RuntimeMonitor.pproj
 ```
 
 To run a single test, for example "simpleRead", do:
 
 ```
-P check PGenerated/CSharp/net6.0/RuntimeMonitor.dll -v -tc simpleRead
+p check PGenerated/CSharp/net6.0/RuntimeMonitor.dll -v -tc simpleRead
 ```
 
 There is a `run_test.sh` script that compiles the P program and then runs
