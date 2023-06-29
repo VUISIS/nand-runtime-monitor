@@ -69,7 +69,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_read_setup) {
+            if (t.ready && t.cmd != c_read_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_read_setup) {
                 send client, eToken, t;
@@ -83,7 +83,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_read_setup) {
+            if (t.ready && t.cmd != c_read_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_read_setup) {
                 send client, eToken, t;
@@ -97,7 +97,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_read_setup) {
+            if (t.ready && t.cmd != c_read_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_read_setup) {
                 send client, eToken, t;
@@ -111,7 +111,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_read_execute) {
+            if (t.ready && t.cmd != c_read_execute && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_read_execute) {
                 send client, eToken, t;
@@ -125,7 +125,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_dummy && t.cmd != c_read_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup) {
+            if (t.ready && t.cmd != c_dummy && t.cmd != c_read_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;
@@ -151,7 +151,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_program_setup) {
+            if (t.ready && t.cmd != c_program_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;
@@ -165,7 +165,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_program_setup) {
+            if (t.ready && t.cmd != c_program_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;
@@ -179,7 +179,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_program_setup) {
+            if (t.ready && t.cmd != c_program_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;
@@ -193,7 +193,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_dummy && t.cmd != c_program_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup) {
+            if (t.ready && t.cmd != c_dummy && t.cmd != c_program_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;
@@ -222,7 +222,7 @@ machine RuntimeMonitor
             if (t.ready && t.cmd == c_erase_setup) {
                 send client, eToken, t;
                 goto ms_erase_awaiting_execute;
-            } else if (t.cmd != c_erase_setup) {
+            } else if (t.ready && t.cmd != c_erase_setup && !t.ready) {
                 goto ms_bug;
             }
         }
@@ -233,7 +233,7 @@ machine RuntimeMonitor
             goto ms_initial_state;
         }
         on eToken do (t: tToken) {
-            if (t.cmd != c_erase_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup) {
+            if (t.ready && t.cmd != c_erase_execute && t.cmd != c_read_setup && t.cmd != c_program_setup && t.cmd != c_erase_setup && !t.ready) {
                 goto ms_bug;
             } else if (t.ready && t.cmd == c_program_setup) {
                 send client, eToken, t;

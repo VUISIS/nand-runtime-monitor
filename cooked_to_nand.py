@@ -82,13 +82,13 @@ def simplify_expr(expr_list):
 # There is a pattern of READY && something && something || NOT(READY)
 # This can be simplified by removing the READY && on the left and the
 # || NOT(READY) on the right
-    if len(expr_list) > 2 and expr_list[-2:] == [['or'], ['not', 'READY']] and \
-        expr_list[0] == ['id', 'READY'] and expr_list[1] == ['and']:
-        expr_list = expr_list[2:-2]
+#    if len(expr_list) > 2 and expr_list[-2:] == [['or'], ['not', 'READY']] and \
+#        expr_list[0] == ['id', 'READY'] and expr_list[1] == ['and']:
+#        expr_list = expr_list[2:-2]
 
     return expr_list
-    
-    
+
+
 def print_state(state_name, state_trans, state_map, f):
     if state_name == "ms_bug":
         return
@@ -110,7 +110,7 @@ def print_state(state_name, state_trans, state_map, f):
             if item == ["and"]:
                 print(" && ", file=f, end='')
             elif item == ["or"]:
-                print(" || ", file=f, end='')
+                print(" && ", file=f, end='')
             elif item == ["id", "READY"]:
                 print("t.ready", file=f, end='')
             elif item == ["not", "READY"]:
