@@ -110,7 +110,7 @@ def print_state(state_name, state_trans, state_map, f):
             if item == ["and"]:
                 print(" && ", file=f, end='')
             elif item == ["or"]:
-                print(" && ", file=f, end='')
+                print(" || ", file=f, end='')
             elif item == ["id", "READY"]:
                 print("t.ready", file=f, end='')
             elif item == ["not", "READY"]:
