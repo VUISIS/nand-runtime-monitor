@@ -27,12 +27,15 @@ machine RuntimeMonitor
     state ms_bug {
         on eToken do (t: tToken) {
            if (t.cmd == c_read_setup && t.ready) {
+                send client, eReset;
                 send client, eToken, t;
                 goto ms_read_awaiting_block_address;
             } else if (t.cmd == c_program_setup && t.ready) {
+                send client, eReset;
                 send client, eToken, t;
                 goto ms_program_awaiting_block_address;
             } else if (t.cmd == c_erase_setup && t.ready) {
+                send client, eReset;
                 send client, eToken, t;
                 goto ms_erase_awaiting_block_address;
             }

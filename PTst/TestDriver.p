@@ -1,9 +1,9 @@
 machine TestSimpleRead {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -14,15 +14,15 @@ machine TestSimpleRead {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -42,10 +42,10 @@ machine TestSimpleRead {
 
 machine TestReadNotReady {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -56,15 +56,15 @@ machine TestReadNotReady {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, false, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_dummy, false, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, false, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, false, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -84,10 +84,10 @@ machine TestReadNotReady {
 
 machine TestReadNoAddress {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -98,9 +98,9 @@ machine TestReadNoAddress {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, true, false, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, true, false, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -120,10 +120,10 @@ machine TestReadNoAddress {
 
 machine TestReadSkipExecute {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -134,14 +134,14 @@ machine TestReadSkipExecute {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -161,10 +161,10 @@ machine TestReadSkipExecute {
 
 machine TestSimpleProgram {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -175,15 +175,15 @@ machine TestSimpleProgram {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_program_execute, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_execute, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -203,10 +203,10 @@ machine TestSimpleProgram {
 
 machine TestProgramSkipExecute {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -217,14 +217,14 @@ machine TestProgramSkipExecute {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -244,10 +244,10 @@ machine TestProgramSkipExecute {
 
 machine TestProgramWrongExecute {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -258,15 +258,15 @@ machine TestProgramWrongExecute {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, true, false, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, true, false, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -286,10 +286,10 @@ machine TestProgramWrongExecute {
 
 machine TestSimpleErase {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -300,12 +300,12 @@ machine TestSimpleErase {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_execute, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_execute, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -325,10 +325,10 @@ machine TestSimpleErase {
 
 machine TestEraseSkipExecute {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -339,11 +339,11 @@ machine TestEraseSkipExecute {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -363,10 +363,10 @@ machine TestEraseSkipExecute {
 
 machine TestEraseWrongExecute {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -377,12 +377,12 @@ machine TestEraseWrongExecute {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_erase_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_execute, true, false, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_erase_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_execute, true, false, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -402,10 +402,10 @@ machine TestEraseWrongExecute {
 
 machine TestLong {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -417,54 +417,54 @@ machine TestLong {
       var tester: machine;
 
     // Do a read
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
 
     // Do a read with an error
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, false, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
-      testTokens = addToken(testTokens, c_dummy, true, false, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, false, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, false, r_none);
 
       // Then move to a good program
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_program_execute, true, true, false);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_auto);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_execute, true, true, r_none);
 
       // then a bad program
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_program_setup, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, false, false, false);
-      testTokens = addToken(testTokens, c_dummy, false, false, false);
-      testTokens = addToken(testTokens, c_dummy, false, false, false);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_program_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, false, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, false, false, r_none);
+      testTokens = addToken(testTokens, c_dummy, false, false, r_none);
 
       // and back to a good read
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_execute, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, false, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_dummy, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_auto);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_execute, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, false, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);
@@ -484,10 +484,10 @@ machine TestLong {
 
 machine TestReset {
 
-  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool) : tTokenList {
+  fun addToken(tokens: tTokenList, cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType) : tTokenList {
     var token: tTestToken;
 
-    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, shouldReset=shouldReset);
+    token = (cmd=cmd, ready=ready, shouldPass=shouldPass, resetType=resetType);
     tokens += (sizeof(tokens), token);
 
     return tokens;
@@ -498,10 +498,10 @@ machine TestReset {
       var testTokens: tTokenList;
       var tester: machine;
 
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
-      testTokens = addToken(testTokens, c_read_setup, true, true, true);
-      testTokens = addToken(testTokens, c_read_setup, true, true, false);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_send);
+      testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
 
       tester = new NandTester();
       send tester, eRunTest, (tokens=testTokens, sender=this);

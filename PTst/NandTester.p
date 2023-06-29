@@ -1,4 +1,10 @@
-type tTestToken = (cmd: eCommand, ready: bool, shouldPass: bool, shouldReset: bool);
+enum eResetType {
+  r_none,
+  r_send,
+  r_auto
+}
+
+type tTestToken = (cmd: eCommand, ready: bool, shouldPass: bool, resetType: eResetType);
 
 type tTokenList = seq[tTestToken];
 
@@ -18,6 +24,7 @@ machine NandTester
   var currTest : tTokenList;
   var currSender : machine;
   var expectingToken : bool;
+  var currResetType : eResetType;
 
   start state Init {
     entry {
@@ -49,7 +56,9 @@ machine NandTester
         goto Run;
       }
       currToken = currTest[testPos];
-      if (currToken.shouldReset) {
+      currResetType = currToken.resetType;
+
+      if (currToken.resetType == r_send) {
         print ("Sending reset");
         send runtimeMonitor, eReset;
         goto AwaitReset;
@@ -61,7 +70,11 @@ machine NandTester
 
         if (expectingToken) {
           expectedPassed = expectedPassed + 1;
-          goto AwaitToken;
+          if (currResetType == r_auto) {
+            goto AwaitReset;
+          } else {
+            goto AwaitToken;
+          }
         } else {
           goto ReadyNextToken;
         }
@@ -116,7 +129,11 @@ machine NandTester
 
     on eReset do {
       print ("Received expected reset");
-      goto ReadyNextToken;
+      if (currResetType == r_auto) {
+        goto AwaitToken;
+      } else {
+        goto ReadyNextToken;
+      }
     }
   }
 }
