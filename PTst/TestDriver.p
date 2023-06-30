@@ -461,7 +461,7 @@ machine TestLong {
       testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
       testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
       testTokens = addToken(testTokens, c_read_execute, true, true, r_none);
-      testTokens = addToken(testTokens, c_dummy, false, true, r_none);
+      testTokens = addToken(testTokens, c_dummy, true, true, r_none);
       testTokens = addToken(testTokens, c_dummy, true, true, r_none);
       testTokens = addToken(testTokens, c_dummy, true, true, r_none);
       testTokens = addToken(testTokens, c_read_setup, true, true, r_none);
